@@ -95,3 +95,7 @@ h1 {
   background-color: #4caf50;
   /* transition: width 1s linear; */
 }
+
+.progress-bar.low-time {
+  background-color: #f44336;
+}

@@ -21,6 +21,9 @@ function createTimer(displayId, startId, pauseId, resetId, barId, initialTime) {
     return `${h}:${m}:${s}`;
   };
 
+  // displaying currant time programmatically 
+  display.textContent = formatTime(timeLeft);
+
   const updateUI = () => {
     if (timeLeft <= 0) {
       clearInterval(intervalId);
@@ -28,6 +31,7 @@ function createTimer(displayId, startId, pauseId, resetId, barId, initialTime) {
       start.disabled = false;
       display.textContent = "Time's up!";
       progressBar.style.width = "0%";
+      progressBar.classList.remove("low-time");
       sound.play();
       return;
     }
@@ -37,6 +41,12 @@ function createTimer(displayId, startId, pauseId, resetId, barId, initialTime) {
 
     const progressPercent = (timeLeft / initialTime) * 100;
     progressBar.style.width = `${progressPercent}%`;
+
+    if (progressPercent < 20) {
+      progressBar.classList.add("low-time");
+    } else {
+      progressBar.classList.remove("low-time");
+    }
   };
 
   const resetInterval = () => {
@@ -61,6 +71,7 @@ function createTimer(displayId, startId, pauseId, resetId, barId, initialTime) {
     resetInterval();
     timeLeft = initialTime;
     display.textContent = formatTime(timeLeft);
+    progressBar.classList.remove("low-time");
     progressBar.style.width = "100%";
     sound.pause();
   });
