@@ -4,11 +4,12 @@ const HOUR = MINUTE * 60;
 
 const sound = new Audio("./assets/audio/alarm.mp3");
 
-function createTimer(displayId, startId, pauseId, resetId, initialTime) {
+function createTimer(displayId, startId, pauseId, resetId, barId, initialTime) {
   const display = document.getElementById(displayId);
   const start = document.getElementById(startId);
   const pause = document.getElementById(pauseId);
   const reset = document.getElementById(resetId);
+  const progressBar = document.getElementById(barId);
 
   let timeLeft = initialTime;
   let intervalId = null;
@@ -26,12 +27,16 @@ function createTimer(displayId, startId, pauseId, resetId, initialTime) {
       intervalId = null;
       start.disabled = false;
       display.textContent = "Time's up!";
+      progressBar.style.width = "0%";
       sound.play();
       return;
     }
 
     timeLeft -= 1;
     display.textContent = formatTime(timeLeft);
+
+    const progressPercent = (timeLeft / initialTime) * 100;
+    progressBar.style.width = `${progressPercent}%`;
   };
 
   const resetInterval = () => {
@@ -56,9 +61,10 @@ function createTimer(displayId, startId, pauseId, resetId, initialTime) {
     resetInterval();
     timeLeft = initialTime;
     display.textContent = formatTime(timeLeft);
+    progressBar.style.width = "100%";
     sound.pause();
   });
 }
 
-createTimer("display-1", "start-1", "pause-1", "reset-1", MINUTE * 25);
-createTimer("display-2", "start-2", "pause-2", "reset-2", MINUTE * 5);
+createTimer("display-1", "start-1", "pause-1", "reset-1", "bar-1", MINUTE * 25);
+createTimer("display-2", "start-2", "pause-2", "reset-2", "bar-2", MINUTE * 1);
