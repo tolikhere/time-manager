@@ -52,6 +52,12 @@ h1 {
 
 .time {
   margin: 25px;
+  transition: transform 0.2s ease-out, color 0.1s ease-out;
+}
+/* use it in js for pulsing */
+.pulse-warning {
+  transform: scale(1.2);
+  color: #f44336;
 }
 
 .timer {

@@ -35,6 +35,7 @@ function createTimer(displayId, startId, pauseId, resetId, barId, initialTime) {
   const pause = document.getElementById(pauseId);
   const reset = document.getElementById(resetId);
   const progressBar = document.getElementById(barId);
+  const pulseClass = "pulse-warning";
 
   let timeLeft = initialTime;
   let intervalId = null;
@@ -45,6 +46,13 @@ function createTimer(displayId, startId, pauseId, resetId, barId, initialTime) {
     const s = String(time % MINUTE).padStart(2, "0");
     return `${h}:${m}:${s}`;
   };
+
+const playPulse = () => {
+  display.classList.add(pulseClass);
+  setTimeout(() => {
+    display.classList.remove(pulseClass);
+  }, 100);
+};
 
   // displaying currant time programmatically 
   display.textContent = formatTime(timeLeft);
@@ -58,11 +66,13 @@ function createTimer(displayId, startId, pauseId, resetId, barId, initialTime) {
       progressBar.style.width = "0%";
       progressBar.classList.remove("low-time");
       sound.play();
+      display.classList.remove(pulseClass);
       return;
     }
 
-    if (timeLeft < 60) {
+    if (timeLeft < 10) {
       playTick();
+      playPulse();
     }
 
     timeLeft -= 1;
