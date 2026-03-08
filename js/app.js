@@ -1,97 +1,64 @@
-const timerDisplay = document.querySelector(".time");
-const timerBtn = document.querySelector(".start");
-const timerDisplay2 = document.querySelector(".time-2");
-const timerBtn2 = document.querySelector(".start-2");
-const pauseBtn = document.querySelector(".pause");
-const resetBtn = document.querySelector(".reset");
-
 const SECOND = 1;
 const MINUTE = 60
 const HOUR = MINUTE * 60;
-const START_TIME = MINUTE * 25;
 
-let timeLeft = START_TIME;
-let intervalId = null;
-let isPaused = false;
+const sound = new Audio("./assets/audio/alarm.mp3");
 
-const sound = new Audio("./assets/audio/Wink_-_Eien_No_Lady_Doll_-Voyage_Voyage_(Zvyki.com).mp3");
+function createTimer(displayId, startId, pauseId, resetId, initialTime) {
+  const display = document.getElementById(displayId);
+  const start = document.getElementById(startId);
+  const pause = document.getElementById(pauseId);
+  const reset = document.getElementById(resetId);
 
-const updateUI = () => {
-  if (timeLeft <= 0) {
-    clearInterval(intervalId);
-    timerBtn.disabled = false;
-    timerDisplay.textContent = "Time's up!";
-    sound.play();
-    return;
-  }
+  let timeLeft = initialTime;
+  let intervalId = null;
 
-
-  timeLeft -= 1;
-  const hours = Math.floor(timeLeft / HOUR);
-  const minutes = Math.floor((timeLeft % HOUR) / MINUTE);
-  const seconds = timeLeft % MINUTE;
-
-  const h = String(hours).padStart(2, "0");
-  const m = String(minutes).padStart(2, "0");
-  const s = String(seconds).padStart(2, "0");
-
-  timerDisplay.textContent = `${h}:${m}:${s}`;
-};
-
-// Start the timer
-timerBtn.addEventListener("click", () => {
-  if (intervalId) return; // to prevent from creating new intervals
-
-  timerBtn.disabled = true;
-  intervalId = setInterval(updateUI, 1000);
-});
-
-// Pause the timer
-pauseBtn.addEventListener("click", () => {
-  clearInterval(intervalId);
-  intervalId = null; // set to null to make the start btn work
-  timerBtn.disabled = false;
-});
-
-// Reset the timer
-resetBtn.addEventListener("click", () => {
-  clearInterval(intervalId);
-  intervalId = null;
-  timeLeft = START_TIME;
-  
-  timerDisplay.textContent = "00:25:00";
-  timerBtn.disabled = false;
-  sound.pause();
-  sound.currentTime = 0;
-});
-
-timerBtn2.addEventListener("click", () => {
-  sound.pause();
-  sound.currentTime = 0;
-  timerBtn2.disabled = true;
-  let timeLeft = MINUTE * 5;
+  const formatTime = (time) => {
+    const h = String(Math.floor(time / HOUR)).padStart(2, "0");
+    const m = String(Math.floor((time % HOUR) / MINUTE)).padStart(2, "0");
+    const s = String(time % MINUTE).padStart(2, "0");
+    return `${h}:${m}:${s}`;
+  };
 
   const updateUI = () => {
-    if (timeLeft < 0) {
+    if (timeLeft <= 0) {
       clearInterval(intervalId);
-      timerBtn2.disabled = false;
-      timerDisplay2.textContent = "Time's up!";
+      intervalId = null;
+      start.disabled = false;
+      display.textContent = "Time's up!";
       sound.play();
       return;
     }
 
-    const hours = Math.floor(timeLeft / HOUR);
-    const minutes = Math.floor((timeLeft % HOUR) / MINUTE);
-    const seconds = timeLeft % MINUTE;
-
-    const h = String(hours).padStart(2, "0");
-    const m = String(minutes).padStart(2, "0");
-    const s = String(seconds).padStart(2, "0");
-
-    timerDisplay2.textContent = `${h}:${m}:${s}`;
     timeLeft -= 1;
+    display.textContent = formatTime(timeLeft);
   };
 
-  updateUI();
-  const intervalId = setInterval(updateUI, 1000);
-});
+  const resetInterval = () => {
+    clearInterval(intervalId);
+    intervalId = null;
+    start.disabled = false;
+  };
+
+  start.addEventListener("click", () => {
+    if (intervalId) return;
+    sound.pause();
+    sound.currentTime = 0;
+    start.disabled = true;
+    intervalId = setInterval(updateUI, 1000);
+  });
+
+  pause.addEventListener("click", () => {
+    resetInterval();
+  });
+
+  reset.addEventListener("click", () => {
+    resetInterval();
+    timeLeft = initialTime;
+    display.textContent = formatTime(timeLeft);
+    sound.pause();
+  });
+}
+
+createTimer("display-1", "start-1", "pause-1", "reset-1", MINUTE * 25);
+createTimer("display-2", "start-2", "pause-2", "reset-2", MINUTE * 5);
