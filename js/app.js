@@ -3,6 +3,31 @@ const MINUTE = 60
 const HOUR = MINUTE * 60;
 
 const sound = new Audio("./assets/audio/alarm.mp3");
+const audioCtx = new window.AudioContext();
+let tickToggle = true;
+
+const playTick = () => {
+  // If the context is paused (by the browser), we resume it
+  if (audioCtx.state === 'suspended') {
+    audioCtx.resume();
+  }
+
+  const oscillator = audioCtx.createOscillator();
+  const gainNode = audioCtx.createGain();
+
+  oscillator.type = 'square';
+  oscillator.frequency.setValueAtTime(tickToggle ? 900 : 600, audioCtx.currentTime); // Frequency in Hz
+  // Smooth fade out to avoid clicking
+  gainNode.gain.setValueAtTime(0.1, audioCtx.currentTime);
+  gainNode.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 0.1);
+
+  oscillator.connect(gainNode);
+  gainNode.connect(audioCtx.destination);
+
+  oscillator.start();
+  oscillator.stop(audioCtx.currentTime + 0.1); // Duration 0.1 sec
+  tickToggle = !tickToggle;
+};
 
 function createTimer(displayId, startId, pauseId, resetId, barId, initialTime) {
   const display = document.getElementById(displayId);
@@ -34,6 +59,10 @@ function createTimer(displayId, startId, pauseId, resetId, barId, initialTime) {
       progressBar.classList.remove("low-time");
       sound.play();
       return;
+    }
+
+    if (timeLeft < 60) {
+      playTick();
     }
 
     timeLeft -= 1;
