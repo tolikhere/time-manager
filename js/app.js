@@ -29,6 +29,21 @@ const playTick = () => {
   tickToggle = !tickToggle;
 };
 
+const sendNotification = (title, message) => {
+  if (Notification.permission === "granted") {
+    const notification = new Notification(title, {
+      body: message,
+      icon: "./assets/icons/timer-icon.png"
+    });
+    // Close the notification automatically after 5 seconds
+    setTimeout(() => notification.close(), 5000);
+    // When clicking on the notification, we return the user to the tab
+    notification.onclick = () => {
+      window.focus();
+    };
+  }
+} 
+
 function createTimer(displayId, startId, pauseId, resetId, barId, initialTime) {
   const display = document.getElementById(displayId);
   const start = document.getElementById(startId);
@@ -65,6 +80,8 @@ const playPulse = () => {
       display.textContent = "Time's up!";
       progressBar.style.width = "0%";
       progressBar.classList.remove("low-time");
+      // SENDING NOTIFICATION
+      sendNotification("Timer completed!", "Time to take a break or get back to work.");
       sound.play();
       display.classList.remove(pulseClass);
       return;
@@ -94,7 +111,14 @@ const playPulse = () => {
     start.disabled = false;
   };
 
+  const requestNotificationPermission = () => {
+    if (Notification.permission === "default") {
+      Notification.requestPermission();
+    }
+  };
+
   start.addEventListener("click", () => {
+    requestNotificationPermission(); // We ask once at the first launch
     if (intervalId) return;
     sound.pause();
     sound.currentTime = 0;
