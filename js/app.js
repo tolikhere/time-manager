@@ -3,6 +3,7 @@ const display = document.getElementById("display");
 const start = document.getElementById("start");
 const pause = document.getElementById("pause");
 const reset = document.getElementById("reset");
+const clear = document.getElementById("clear");
 const progressBar = document.getElementById("bar");
 const countDisplay = document.getElementById("session-count");
 const iconsDisplay = document.querySelectorAll("#session-icons span");
@@ -118,8 +119,19 @@ const displaySessions = () => {
   countDisplay.textContent = `${completedSessions}/${SESSIONS}`;
 };
 
+const clearSessions = () => {
+  completedSessions = 0;
+  iconsDisplay.forEach((icons) => {
+    icons.classList.remove("success");
+  });
+  countDisplay.textContent = `${completedSessions}/${SESSIONS}`;
+};
+
 const updateUI = () => {
   if (timeLeft <= 0) {
+    if (completedSessions === SESSIONS) {
+      clearSessions();
+    }
     if (isWorkPhase) {
       displaySessions();
       // SENDING NOTIFICATION
@@ -168,4 +180,12 @@ pause.addEventListener("click", () => {
 reset.addEventListener("click", () => {
   resetTimer();
   sound.pause();
+});
+
+clear.addEventListener("click", () => {
+  if (confirm("Are you sure you want to clear sessions?")) {
+    clearSessions();
+    isWorkPhase = true;
+    resetTimer();
+  }
 });

@@ -148,3 +148,9 @@ h1 {
 .session-icons .success {
   background-color: #4caf50;
 }
+
+.clear {
+  border-radius: 15px;
+  background-color: darkred;
+  margin-top: 25px;
+}
