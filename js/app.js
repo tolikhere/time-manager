@@ -1,10 +1,38 @@
+const title = document.getElementById("mode-title");
+const display = document.getElementById("display");
+const start = document.getElementById("start");
+const pause = document.getElementById("pause");
+const reset = document.getElementById("reset");
+const progressBar = document.getElementById("bar");
+
 const SECOND = 1;
 const MINUTE = 60
 const HOUR = MINUTE * 60;
+const workTime = 10;
+const breakTime = 5;
 
 const sound = new Audio("./assets/audio/alarm.mp3");
 const audioCtx = new window.AudioContext();
+
+
+const pulseClass = "pulse-warning";
+
+let intervalId = null;
 let tickToggle = true;
+let isWorkPhase = true;
+let timeLeft = workTime
+let initialTime = timeLeft;
+
+
+const formatTime = (time) => {
+  const h = String(Math.floor(time / HOUR)).padStart(2, "0");
+  const m = String(Math.floor((time % HOUR) / MINUTE)).padStart(2, "0");
+  const s = String(time % MINUTE).padStart(2, "0");
+  return `${h}:${m}:${s}`;
+};
+
+// displaying currant time programmatically 
+display.textContent = formatTime(timeLeft);
 
 const playTick = () => {
   // If the context is paused (by the browser), we resume it
@@ -42,25 +70,7 @@ const sendNotification = (title, message) => {
       window.focus();
     };
   }
-} 
-
-function createTimer(displayId, startId, pauseId, resetId, barId, initialTime) {
-  const display = document.getElementById(displayId);
-  const start = document.getElementById(startId);
-  const pause = document.getElementById(pauseId);
-  const reset = document.getElementById(resetId);
-  const progressBar = document.getElementById(barId);
-  const pulseClass = "pulse-warning";
-
-  let timeLeft = initialTime;
-  let intervalId = null;
-
-  const formatTime = (time) => {
-    const h = String(Math.floor(time / HOUR)).padStart(2, "0");
-    const m = String(Math.floor((time % HOUR) / MINUTE)).padStart(2, "0");
-    const s = String(time % MINUTE).padStart(2, "0");
-    return `${h}:${m}:${s}`;
-  };
+};
 
 const playPulse = () => {
   display.classList.add(pulseClass);
@@ -69,76 +79,74 @@ const playPulse = () => {
   }, 100);
 };
 
-  // displaying currant time programmatically 
+const resetTimer = () => {
+  clearInterval(intervalId);
+  intervalId = null;
+  start.disabled = false;
+  timeLeft = isWorkPhase ? workTime : breakTime;
+  initialTime = timeLeft;
+  display.textContent = formatTime(timeLeft);
+  progressBar.classList.remove("low-time");
+  progressBar.style.width = "100%";
+  display.classList.remove(pulseClass);
+  title.textContent = isWorkPhase ? "💻 Working hours" : "☕ Short Break";
+  title.style.color = isWorkPhase ? "#f44336" : "#4caf50";
+};
+
+const updateProgressBar = () => {
+  const progressPercent = (timeLeft / initialTime) * 100;
+  progressBar.style.width = `${progressPercent}%`;
+
+  if (progressPercent < 20) {
+    progressBar.classList.add("low-time");
+  } else {
+    progressBar.classList.remove("low-time");
+  }
+};
+
+const updateUI = () => {
+  if (timeLeft <= 0) {
+    isWorkPhase = !isWorkPhase;
+    resetTimer();
+    // SENDING NOTIFICATION
+    sendNotification("Time's up!", "Time to take a break or get back to work.");
+    sound.play();
+    return;
+  }
+
+  if (timeLeft < 10) {
+    playTick();
+    playPulse();
+  }
+
+  timeLeft -= 1;
   display.textContent = formatTime(timeLeft);
 
-  const updateUI = () => {
-    if (timeLeft <= 0) {
-      clearInterval(intervalId);
-      intervalId = null;
-      start.disabled = false;
-      display.textContent = "Time's up!";
-      progressBar.style.width = "0%";
-      progressBar.classList.remove("low-time");
-      // SENDING NOTIFICATION
-      sendNotification("Timer completed!", "Time to take a break or get back to work.");
-      sound.play();
-      display.classList.remove(pulseClass);
-      return;
-    }
+  updateProgressBar();
+};
 
-    if (timeLeft < 10) {
-      playTick();
-      playPulse();
-    }
+const requestNotificationPermission = () => {
+  if (Notification.permission === "default") {
+    Notification.requestPermission();
+  }
+};
 
-    timeLeft -= 1;
-    display.textContent = formatTime(timeLeft);
+start.addEventListener("click", () => {
+  requestNotificationPermission(); // We ask once at the first launch
+  if (intervalId) return;
+  sound.pause();
+  sound.currentTime = 0;
+  start.disabled = true;
+  intervalId = setInterval(updateUI, 1000);
+});
 
-    const progressPercent = (timeLeft / initialTime) * 100;
-    progressBar.style.width = `${progressPercent}%`;
+pause.addEventListener("click", () => {
+  clearInterval(intervalId);
+  intervalId = null;
+  start.disabled = false;
+});
 
-    if (progressPercent < 20) {
-      progressBar.classList.add("low-time");
-    } else {
-      progressBar.classList.remove("low-time");
-    }
-  };
-
-  const resetInterval = () => {
-    clearInterval(intervalId);
-    intervalId = null;
-    start.disabled = false;
-  };
-
-  const requestNotificationPermission = () => {
-    if (Notification.permission === "default") {
-      Notification.requestPermission();
-    }
-  };
-
-  start.addEventListener("click", () => {
-    requestNotificationPermission(); // We ask once at the first launch
-    if (intervalId) return;
-    sound.pause();
-    sound.currentTime = 0;
-    start.disabled = true;
-    intervalId = setInterval(updateUI, 1000);
-  });
-
-  pause.addEventListener("click", () => {
-    resetInterval();
-  });
-
-  reset.addEventListener("click", () => {
-    resetInterval();
-    timeLeft = initialTime;
-    display.textContent = formatTime(timeLeft);
-    progressBar.classList.remove("low-time");
-    progressBar.style.width = "100%";
-    sound.pause();
-  });
-}
-
-createTimer("display-1", "start-1", "pause-1", "reset-1", "bar-1", MINUTE * 25);
-createTimer("display-2", "start-2", "pause-2", "reset-2", "bar-2", MINUTE * 1);
+reset.addEventListener("click", () => {
+  resetTimer();
+  sound.pause();
+});
