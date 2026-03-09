@@ -12,14 +12,13 @@ const SECOND = 1;
 const MINUTE = 60
 const HOUR = MINUTE * 60;
 const SESSIONS = 4;
-const workTime = 6;
-const shortBreak = 5;
-const longBreak = 7;
+const workTime = MINUTE * 25;
+const shortBreak = MINUTE * 5;
+const longBreak = MINUTE * 20;
+const pulseClass = "pulse-warning";
 
 const sound = new Audio("./assets/audio/alarm.mp3");
 const audioCtx = new window.AudioContext();
-
-const pulseClass = "pulse-warning";
 
 let intervalId = null;
 let tickToggle = true;
@@ -27,7 +26,7 @@ let isWorkPhase = true;
 let timeLeft = workTime
 let initialTime = timeLeft;
 let breakTime = shortBreak;
-let completedSessions = 0;
+let completedSessions = parseInt(localStorage.getItem("completedSessions")) || 0;
 
 
 const formatTime = (time) => {
@@ -36,9 +35,6 @@ const formatTime = (time) => {
   const s = String(time % MINUTE).padStart(2, "0");
   return `${h}:${m}:${s}`;
 };
-
-// displaying currant time programmatically 
-display.textContent = formatTime(timeLeft);
 
 const playTick = () => {
   // If the context is paused (by the browser), we resume it
@@ -114,8 +110,9 @@ const updateProgressBar = () => {
 };
 
 const displaySessions = () => {
-  iconsDisplay[completedSessions]?.classList.add("success");
-  completedSessions += 1;
+  for (let i = 0; i < completedSessions; i++) {
+    iconsDisplay[i]?.classList.add("success");
+  }
   countDisplay.textContent = `${completedSessions}/${SESSIONS}`;
 };
 
@@ -124,7 +121,8 @@ const clearSessions = () => {
   iconsDisplay.forEach((icons) => {
     icons.classList.remove("success");
   });
-  countDisplay.textContent = `${completedSessions}/${SESSIONS}`;
+  displaySessions();
+  localStorage.removeItem("completedSessions");
 };
 
 const updateUI = () => {
@@ -133,7 +131,9 @@ const updateUI = () => {
       clearSessions();
     }
     if (isWorkPhase) {
+      completedSessions += 1;
       displaySessions();
+      localStorage.setItem("completedSessions", completedSessions);
       // SENDING NOTIFICATION
       sendNotification("Congrats!", "Time to take a break.");
     } else {
@@ -161,6 +161,12 @@ const requestNotificationPermission = () => {
     Notification.requestPermission();
   }
 };
+
+/****************** Launch of the App ************************/
+
+display.textContent = formatTime(timeLeft);
+// After we red local storage we need to display sessions
+displaySessions();
 
 start.addEventListener("click", () => {
   requestNotificationPermission(); // We ask once at the first launch
