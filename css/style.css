@@ -122,3 +122,29 @@ h1 {
 .progress-bar.low-time {
   background-color: #f44336;
 }
+
+/* Sessions style */
+
+.stats {
+  margin-top: 20px;
+  font-weight: bold;
+  text-align: center;
+}
+
+.session-icons {
+  font-size: 24px;
+  margin-top: 5px;
+  letter-spacing: 5px;
+}
+
+.session-icons span {
+  display: inline-block;
+  height: 30px;
+  width: 30px;
+  background-color: gray;
+  border-radius: 50%;
+}
+
+.session-icons .success {
+  background-color: #4caf50;
+}

@@ -4,16 +4,19 @@ const start = document.getElementById("start");
 const pause = document.getElementById("pause");
 const reset = document.getElementById("reset");
 const progressBar = document.getElementById("bar");
+const countDisplay = document.getElementById("session-count");
+const iconsDisplay = document.querySelectorAll("#session-icons span");
 
 const SECOND = 1;
 const MINUTE = 60
 const HOUR = MINUTE * 60;
-const workTime = 10;
-const breakTime = 5;
+const SESSIONS = 4;
+const workTime = 6;
+const shortBreak = 5;
+const longBreak = 7;
 
 const sound = new Audio("./assets/audio/alarm.mp3");
 const audioCtx = new window.AudioContext();
-
 
 const pulseClass = "pulse-warning";
 
@@ -22,6 +25,8 @@ let tickToggle = true;
 let isWorkPhase = true;
 let timeLeft = workTime
 let initialTime = timeLeft;
+let breakTime = shortBreak;
+let completedSessions = 0;
 
 
 const formatTime = (time) => {
@@ -83,13 +88,16 @@ const resetTimer = () => {
   clearInterval(intervalId);
   intervalId = null;
   start.disabled = false;
+  breakTime = completedSessions === SESSIONS ? longBreak : shortBreak;
   timeLeft = isWorkPhase ? workTime : breakTime;
   initialTime = timeLeft;
   display.textContent = formatTime(timeLeft);
   progressBar.classList.remove("low-time");
   progressBar.style.width = "100%";
   display.classList.remove(pulseClass);
-  title.textContent = isWorkPhase ? "💻 Working hours" : "☕ Short Break";
+  title.textContent = isWorkPhase 
+    ? "💻 Working hours" 
+    : `${completedSessions === SESSIONS ? "🕹️ Long" : "☕ Short"} Break`;
   title.style.color = isWorkPhase ? "#f44336" : "#4caf50";
 };
 
@@ -104,12 +112,23 @@ const updateProgressBar = () => {
   }
 };
 
+const displaySessions = () => {
+  iconsDisplay[completedSessions]?.classList.add("success");
+  completedSessions += 1;
+  countDisplay.textContent = `${completedSessions}/${SESSIONS}`;
+};
+
 const updateUI = () => {
   if (timeLeft <= 0) {
+    if (isWorkPhase) {
+      displaySessions();
+      // SENDING NOTIFICATION
+      sendNotification("Congrats!", "Time to take a break.");
+    } else {
+      sendNotification("Break is over!", "Time to get back to work.");
+    }
     isWorkPhase = !isWorkPhase;
     resetTimer();
-    // SENDING NOTIFICATION
-    sendNotification("Time's up!", "Time to take a break or get back to work.");
     sound.play();
     return;
   }
