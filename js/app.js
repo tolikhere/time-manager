@@ -11,9 +11,9 @@ const SECOND = 1;
 const MINUTE = 60;
 const HOUR = MINUTE * 60;
 const SESSIONS = 4;
-const workTime = 25;
-const shortBreak = 5;
-const longBreak = 20;
+const workTime = MINUTE * 25;
+const shortBreak = MINUTE * 5;
+const longBreak = MINUTE * 20;
 const pulseClass = "pulse-warning";
 
 const PLAY_ICON = `<svg xmlns="http://www.w3.org" width="50" height="50" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>`;
