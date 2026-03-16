@@ -11,9 +11,9 @@ const SECOND = 1;
 const MINUTE = 60;
 const HOUR = MINUTE * 60;
 const SESSIONS = 4;
-const workTime = MINUTE * 25;
-const shortBreak = MINUTE * 5;
-const longBreak = MINUTE * 20;
+const workTime = 25;
+const shortBreak = 5;
+const longBreak = 20;
 const pulseClass = "pulse-warning";
 
 const PLAY_ICON = `<svg xmlns="http://www.w3.org" width="50" height="50" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>`;
@@ -29,6 +29,8 @@ let isWorkPhase = true;
 let timeLeft = workTime;
 let initialTime = timeLeft;
 let breakTime = shortBreak;
+let startTime = null;
+let timeAtPause = workTime;
 let completedSessions =
   parseInt(localStorage.getItem("completedSessions")) || 0;
 
@@ -96,6 +98,7 @@ const resetTimer = () => {
   start.disabled = false;
   breakTime = completedSessions === SESSIONS ? longBreak : shortBreak;
   timeLeft = isWorkPhase ? workTime : breakTime;
+  timeAtPause = timeLeft;
   initialTime = timeLeft;
   display.textContent = formatTime(timeLeft);
   progressBar.classList.remove("low-time");
@@ -136,32 +139,40 @@ const clearSessions = () => {
   localStorage.removeItem("completedSessions");
 };
 
-const updateUI = () => {
-  if (timeLeft <= 0) {
-    if (completedSessions === SESSIONS) {
-      clearSessions();
-    }
-    if (isWorkPhase) {
-      completedSessions += 1;
-      displaySessions();
-      localStorage.setItem("completedSessions", completedSessions);
-      // SENDING NOTIFICATION
-      sendNotification("Congrats!", "Time to take a break.");
-    } else {
-      sendNotification("Break is over!", "Time to get back to work.");
-    }
-    isWorkPhase = !isWorkPhase;
-    resetTimer();
-    sound.play();
-    return;
+const handlePhaseEnd = () => {
+  if (completedSessions === SESSIONS) {
+    clearSessions();
   }
+  if (isWorkPhase) {
+    completedSessions += 1;
+    displaySessions();
+    localStorage.setItem("completedSessions", completedSessions);
+    // SENDING NOTIFICATION
+    sendNotification("Congrats!", "Time to take a break.");
+  } else {
+    sendNotification("Break is over!", "Time to get back to work.");
+  }
+  isWorkPhase = !isWorkPhase;
+  resetTimer();
+  sound.play();
+};
 
-  if (timeLeft < 10) {
+const updateUI = () => {
+  const currentTime = Date.now();
+  const secondsElapsed = Math.floor((currentTime - startTime) / 1000);
+
+  if (timeLeft <= 10 && timeLeft !== timeAtPause - secondsElapsed) { // Make check on every second
     playTick();
     playPulse();
   }
 
-  timeLeft -= 1;
+  timeLeft = timeAtPause - secondsElapsed;
+  console.log(timeLeft);
+  if (timeLeft <= 0) {
+    timeLeft = 0;
+    handlePhaseEnd();
+    return;
+  }
   display.textContent = formatTime(timeLeft);
 
   updateProgressBar();
@@ -183,15 +194,15 @@ start.addEventListener("click", () => {
   if (isPaused) {
     isPaused = false;
     requestNotificationPermission(); // We ask once at the first launch
-    if (intervalId) return;
+    startTime = Date.now();
     sound.pause();
     sound.currentTime = 0;
-    // start.disabled = true;
-    intervalId = setInterval(updateUI, 1000);
+    intervalId = setInterval(updateUI, 100); // (100ms) for a smoother bar
   } else {
+    // How much time was left when we paused
+    timeAtPause = timeLeft;
     clearInterval(intervalId);
     intervalId = null;
-    // start.disabled = false;
     isPaused = true;
   }
 
