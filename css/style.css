@@ -24,7 +24,7 @@ h1 {
 
 .add {
   margin-top: 25px;
-  background-color: #4CAF50;
+  background-color: #4caf50;
   color: white;
 }
 
@@ -48,7 +48,9 @@ h1 {
 
 .time {
   margin: 25px;
-  transition: transform 0.2s ease-out, color 0.1s ease-out;
+  transition:
+    transform 0.2s ease-out,
+    color 0.1s ease-out;
 }
 /* use it in js for pulsing */
 .pulse-warning {
@@ -65,7 +67,7 @@ h1 {
 }
 
 .mobile-ui {
-  width: clamp(320px, 90%, 600px);;
+  width: clamp(320px, 90%, 600px);
   margin: auto;
   border: 7px solid black;
   min-height: 100vh;
