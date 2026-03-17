@@ -159,23 +159,26 @@ const handlePhaseEnd = () => {
 const updateUI = () => {
   const currentTime = Date.now();
   const secondsElapsed = Math.floor((currentTime - startTime) / 1000);
+  const newTimeLeft = timeAtPause - secondsElapsed;
+  // Only update heavy UI elements if a full second has passed
+  if (newTimeLeft !== timeLeft) {
+    timeLeft = newTimeLeft;
+    display.textContent = formatTime(timeLeft);
+    updateProgressBar();
 
-  if (timeLeft <= 10 && timeLeft !== timeAtPause - secondsElapsed) {
-    // Make check on every second
-    playTick();
-    playPulse();
+    console.log(timeLeft);
+    if (timeLeft <= 10) {
+      // Make check on every second
+      playTick();
+      playPulse();
+    }
   }
 
-  timeLeft = timeAtPause - secondsElapsed;
-  console.log(timeLeft);
   if (timeLeft <= 0) {
     timeLeft = 0;
     handlePhaseEnd();
     return;
   }
-  display.textContent = formatTime(timeLeft);
-
-  updateProgressBar();
 };
 
 const requestNotificationPermission = () => {
