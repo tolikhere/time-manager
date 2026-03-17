@@ -1,0 +1,28 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches:
+      - main  # The script will be triggered when pushing to the main branch.
+
+permissions:
+  contents: write  # Write permission to the gh-pages branch
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Update version in HTML
+        run: |
+          # Finds ?v= and any numbers after it, replacing them with the build number.
+          # The backslash \? is needed to correctly search for the question mark.
+          sed -i "s/\?v=[0-9]*/\?v=${{ github.run_number }}/g" *.html
+
+      - name: Deploy to GitHub Pages
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          folder: . 
+          branch: gh-pages
