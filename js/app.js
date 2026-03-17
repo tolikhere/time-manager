@@ -6,7 +6,7 @@ const clear = document.getElementById("clear");
 const progressBar = document.getElementById("bar");
 const countDisplay = document.getElementById("session-count");
 const iconsDisplay = document.querySelectorAll("#session-icons span");
-const timerWorker = new Worker("/js/worker.js");
+const timerWorker = new Worker("./js/worker.js");
 
 const SECOND = 1;
 const MINUTE = 60;
@@ -20,7 +20,7 @@ const pulseClass = "pulse-warning";
 const PLAY_ICON = `<svg xmlns="http://www.w3.org" width="50" height="50" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>`;
 const PAUSE_ICON = `<svg xmlns="http://www.w3.org" width="50" height="50" viewBox="0 0 24 24" fill="currentColor"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>`;
 
-const sound = new Audio("/assets/audio/alarm.mp3");
+const sound = new Audio("./assets/audio/alarm.mp3");
 const audioCtx = new window.AudioContext();
 
 let isPaused = true;
@@ -74,7 +74,7 @@ const sendNotification = (title, message) => {
   if (Notification.permission === "granted") {
     const notification = new Notification(title, {
       body: message,
-      icon: "/assets/icons/timer-icon.png",
+      icon: "./assets/icons/timer-icon.png",
     });
     // Close the notification automatically after 5 seconds
     setTimeout(() => notification.close(), 5000);
