@@ -23,6 +23,11 @@ h1 {
   padding: 45px 0;
 }
 
+footer {
+  margin-top: auto;
+  font-size: 0.8rem;
+}
+
 .add {
   margin-top: 25px;
   background-color: #4caf50;
@@ -71,6 +76,8 @@ h1 {
   border-radius: 25px;
   overflow: hidden;
   background-color: whitesmoke;
+  display: flex;
+  flex-direction: column;
   /* transition: width 1 linear; */
 }
 
