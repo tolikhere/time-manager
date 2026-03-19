@@ -1,0 +1,11 @@
+User-agent: *
+
+Allow: /
+Allow: /assets/
+Allow: /css/
+Allow: /js/
+
+Disallow: /.github/
+Disallow: /README.md
+
+Sitemap: https://tolikhere.github.io/time-manager/sitemap.xml
