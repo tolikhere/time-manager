@@ -187,6 +187,8 @@ const requestNotificationPermission = () => {
   }
 };
 
+//TODO: Create changing language base on OS
+
 /****************** Launch of the App ************************/
 
 display.textContent = formatTime(timeLeft);
