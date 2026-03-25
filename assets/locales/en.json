@@ -1,0 +1,13 @@
+{
+  "meta_title": "Time Manager — Online Productivity Timer",
+  "meta_description": "Free time manager and focus timer. Track your work sessions, take breaks, and boost your personal efficiency with ease.",
+  "og_title": "Time Manager — Your Personal Time Management Tool",
+  "og_description": "Simple work and study timer right in your browser.",
+  "mode_working": "💻 Working hours",
+  "mode_break": "☕ Break time",
+  "completed_sessions": "Completed sessions:",
+  "btn_clear": "Clear",
+  "btn_start_label": "Start Timer",
+  "btn_reset_label": "Reset Timer",
+  "footer_copy": "© 2026 Time Manager Tool"
+}
