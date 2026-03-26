@@ -189,6 +189,11 @@ const requestNotificationPermission = () => {
 
 //TODO: Create changing language base on OS
 
+const getSystemLanguage = () => {
+  const language = localStorage.getItem("language") || navigator.language.split('-')[0];
+  return ["ru", "en"].includes(language) ? language : "en";
+};
+
 /****************** Launch of the App ************************/
 
 display.textContent = formatTime(timeLeft);
