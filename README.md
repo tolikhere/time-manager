@@ -17,6 +17,7 @@ A stylish and functional productivity timer built in pure JavaScript using moder
 - **Web Audio API** (on-the-fly sound synthesis)
 - **Notifications API** (OS interaction)
 - **LocalStorage** (statistics storage)
+- **Worker**
 
 ## 📦 How to Run Locally
 1. Clone the repository:
