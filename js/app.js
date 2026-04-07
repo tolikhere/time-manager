@@ -106,7 +106,7 @@ const resetTimer = () => {
   title.textContent = isWorkPhase
     ? "💻 Working hours"
     : `${completedSessions === SESSIONS ? "🕹️ Long" : "☕ Short"} Break`;
-  title.style.color = isWorkPhase ? "#f44336" : "#4caf50";
+  title.style.color = isWorkPhase ? "lightskyblue" : "#4caf50";
   isPaused = true;
   start.innerHTML = PLAY_ICON;
 };
