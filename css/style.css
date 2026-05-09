@@ -139,10 +139,10 @@ footer {
   margin-top: 20px;
   font-weight: bold;
   text-align: center;
+  font-size: 24px;
 }
 
 .session-icons {
-  font-size: 24px;
   margin-top: 5px;
   letter-spacing: 5px;
 }
