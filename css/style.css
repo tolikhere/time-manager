@@ -81,14 +81,13 @@ footer {
   background-color: whitesmoke;
   display: flex;
   flex-direction: column;
-  gap: 3em;
   /* transition: width 1 linear; */
 }
 
 .btn {
   padding: 5px 10px;
   border-radius: 50%;
-  width: 100px;
+  width: 120px;
   aspect-ratio: 1/1;
   border: 3px solid lightblue;
   cursor: pointer;
