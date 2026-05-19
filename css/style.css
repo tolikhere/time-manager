@@ -59,7 +59,7 @@ footer {
 }
 /* use it in js for pulsing */
 .pulse-warning {
-  transform: scale(1.2);
+  transform: scale(1.4);
   color: #f44336;
 }
 
