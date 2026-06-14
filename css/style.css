@@ -89,7 +89,7 @@ footer {
   border-radius: 50%;
   width: 120px;
   aspect-ratio: 1/1;
-  border: 3px solid lightblue;
+  border: none;
   cursor: pointer;
   font-size: 28px;
   font-weight: 600;
