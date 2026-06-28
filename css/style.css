@@ -74,7 +74,7 @@ footer {
 .mobile-ui {
   width: clamp(320px, 90%, 650px);
   margin: auto;
-  border: 7px solid black;
+  border: 7px solid purple;
   min-height: 100vh;
   border-radius: 25px;
   overflow: hidden;
