@@ -78,7 +78,7 @@ footer {
   min-height: 100vh;
   border-radius: 25px;
   overflow: hidden;
-  background-color: whitesmoke;
+  background-color: white;
   display: flex;
   flex-direction: column;
   /* transition: width 1 linear; */
