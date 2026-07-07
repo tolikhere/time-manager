@@ -76,7 +76,7 @@ footer {
   margin: auto;
   border: 7px solid black;
   min-height: 100vh;
-  border-radius: 25px;
+  border-radius: 20px;
   overflow: hidden;
   background-color: white;
   display: flex;
