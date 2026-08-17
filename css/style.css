@@ -42,7 +42,7 @@ footer {
   border: none;
   background-color: transparent;
   cursor: pointer;
-  color: red;
+  color: rgb(189, 23, 23);
 }
 
 .close:hover {
