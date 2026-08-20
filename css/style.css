@@ -150,7 +150,7 @@ footer {
   display: inline-block;
   height: 30px;
   width: 30px;
-  background-color: gray;
+  background-color: rgb(156, 156, 156);
   border-radius: 50%;
 }
 
