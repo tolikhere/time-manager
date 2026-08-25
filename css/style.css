@@ -4,15 +4,17 @@
 
 :root {
   font-size: inherit;
-  --big: 4rem;
   --black: #333;
 }
 
 body {
+  display: flex;
+  flex-direction: column;
   margin: 0;
   padding: 5px;
   text-align: center;
   background-color: #bbb;
+  min-height: 100vh;
 }
 
 h1 {
@@ -76,7 +78,7 @@ footer {
   width: clamp(320px, 100%, 650px);
   margin: auto;
   border: 7px solid var(--black);
-  min-height: 100vh;
+  flex: 1;
   border-radius: 20px;
   overflow: hidden;
   background-color: white;
