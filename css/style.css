@@ -19,7 +19,7 @@ body {
 
 h1 {
   text-align: center;
-  font-size: 2.8rem;
+  font-size: 2rem;
   background-color: var(--black);
   color: lightblue;
   margin: 0;
@@ -69,7 +69,7 @@ footer {
 
 .timer {
   position: relative;
-  font-size: 4rem;
+  font-size: 3rem;
   width: 100%;
   font-weight: 900;
   padding: 15px 0;
@@ -91,11 +91,11 @@ footer {
 .btn {
   padding: 6px 6px;
   border-radius: 50%;
-  width: 105px;
+  width: 80px;
   aspect-ratio: 1/1;
   border: none;
   cursor: pointer;
-  font-size: 1.75rem;
+  font-size: 1.5rem;
   font-weight: 600;
   color: white;
   background-color: #222;
@@ -103,6 +103,7 @@ footer {
   display: flex;
   justify-content: center;
   align-items: center;
+  transition: width 0.2s;
 }
 
 .btn:hover {
@@ -118,10 +119,11 @@ footer {
 
 .progress-container {
   width: 100%;
-  height: 35px;
+  height: 25px;
   background-color: #e2e2e2;
   overflow: hidden;
   margin: 15px 0;
+  transition: height 0.2s;
 }
 
 .progress-bar {
@@ -141,7 +143,7 @@ footer {
   margin-top: 20px;
   font-weight: bold;
   text-align: center;
-  font-size: 1.5rem;
+  font-size: 1.2rem;
 }
 
 .session-icons {
@@ -151,8 +153,8 @@ footer {
 
 .session-icons span {
   display: inline-block;
-  height: 30px;
-  width: 30px;
+  width: 25px;
+  aspect-ratio: 1/1;
   background-color: rgb(156, 156, 156);
   border-radius: 50%;
 }
@@ -175,5 +177,22 @@ footer {
 
   .timer {
     font-size: 5.8rem;
+  }
+
+  .btn {
+    width: 105px;
+    font-size: 1.75rem;
+  }
+
+  .progress-container {
+    height: 35px;
+  }
+
+  .stats {
+    font-size: 1.5rem;
+  }
+
+  .session-icons span {
+    width: 30px;
   }
 }
