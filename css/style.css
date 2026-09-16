@@ -24,7 +24,9 @@ h1 {
   color: lightblue;
   margin: 0;
   padding: 10px 0;
-  transition: padding 0.2s linear;
+  transition:
+    padding 0.2s linear,
+    font-size 0.2s linear;
 }
 
 footer {
@@ -59,7 +61,8 @@ footer {
   font-style: normal;
   transition:
     transform 0.2s ease-out,
-    color 0.1s ease-out;
+    color 0.1s ease-out,
+    font-size 0.2s linear;
 }
 /* use it in js for pulsing */
 .pulse-warning {
@@ -103,7 +106,7 @@ footer {
   display: flex;
   justify-content: center;
   align-items: center;
-  transition: width 0.2s;
+  transition: width 0.3s;
 }
 
 .btn:hover {
@@ -180,7 +183,7 @@ footer {
   }
 
   .btn {
-    width: 100px;
+    width: 120px;
     font-size: 1.75rem;
   }
 
