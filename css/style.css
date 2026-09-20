@@ -227,3 +227,10 @@ footer {
     width: 35px;
   }
 }
+
+@media (min-width: 1800px) {
+  main {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+  }
+}

@@ -38,11 +38,12 @@
     <link rel="icon" href="./favicon.ico" type="image/x-icon" />
   </head>
   <body>
-    <div class="mobile-ui">
-      <header>
-        <h1 id="mode-title">💻 Working hours</h1>
-      </header>
-      <main>
+    <main>
+      <div id="tasks"></div>
+      <div class="mobile-ui">
+        <header>
+          <h1 id="mode-title">💻 Working hours</h1>
+        </header>
         <div class="timer">
           <p id="display" class="time">00:25:00</p>
           <div class="progress-container">
@@ -85,12 +86,13 @@
           </div>
           <button id="clear" class="btn clear">Clear</button>
         </div>
-      </main>
 
-      <footer>
-        <p>&copy; 2026 Time Manager Tool</p>
-      </footer>
-    </div>
+        <footer>
+          <p>&copy; 2026 Time Manager Tool</p>
+        </footer>
+      </div>
+      <div id="paused"></div>
+    </main>
     <script src="./js/app.js?v=1"></script>
   </body>
 </html>
