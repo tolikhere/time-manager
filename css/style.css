@@ -23,7 +23,7 @@ h1 {
   background-color: var(--black);
   color: lightblue;
   margin: 0;
-  padding: 10px 0;
+  padding: 7px 0;
   transition:
     padding 0.2s linear,
     font-size 0.2s linear;
