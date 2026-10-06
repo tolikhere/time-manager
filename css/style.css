@@ -23,7 +23,7 @@ h1 {
   background-color: var(--black);
   color: lightblue;
   margin: 0;
-  padding: 10px 0;
+  padding: 7px 0;
   transition:
     padding 0.2s linear,
     font-size 0.2s linear;
@@ -55,7 +55,7 @@ footer {
 }
 
 .time {
-  margin: 25px;
+  margin: 20px;
   font-family: "Audiowide", sans-serif;
   font-weight: 600;
   font-style: normal;
@@ -94,7 +94,7 @@ footer {
 .btn {
   padding: 5px 5px;
   border-radius: 50%;
-  width: 80px;
+  width: 90px;
   aspect-ratio: 1/1;
   border: none;
   cursor: pointer;
@@ -143,7 +143,7 @@ footer {
 /* Sessions style */
 
 .stats {
-  margin-top: 20px;
+  margin-top: 25px;
   font-weight: bold;
   text-align: center;
   font-size: 1.2rem;
