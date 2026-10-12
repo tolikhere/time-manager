@@ -83,7 +83,7 @@ footer {
   margin: auto;
   border: 5px solid var(--black);
   flex: 1;
-  border-radius: 15px;
+  border-radius: 25px;
   overflow: hidden;
   background-color: white;
   display: flex;
