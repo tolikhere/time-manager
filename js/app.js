@@ -104,7 +104,7 @@ const resetTimer = () => {
   progressBar.style.width = "100%";
   display.classList.remove(pulseClass);
   title.textContent = isWorkPhase
-    ? "💻 Working hours"
+    ? "💻 Show Time"
     : `${completedSessions === SESSIONS ? "🕹️ Long" : "☕ Short"} Break`;
   title.style.color = isWorkPhase ? "lightskyblue" : "#4caf50";
   isPaused = true;
